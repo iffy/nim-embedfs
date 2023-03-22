@@ -22,7 +22,7 @@ test "walk":
 
 test "get":
   const fs = embedDir("data")
-  check fs.get("bar.txt") == some("bar\l")
+  check fs.get("bar.txt") == some("bar")
 
 test "dynamic":
   const fs = embedDir("_dynamic", embed = false)
