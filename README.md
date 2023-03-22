@@ -2,6 +2,7 @@
 
 Embed directories of files in your executable. It's like `staticRead`/`slurp` for whole directories.
 
+[![.github/workflows/tests.yml](https://github.com/iffy/nim-embedfs/actions/workflows/tests.yml/badge.svg)](https://github.com/iffy/nim-embedfs/actions/workflows/tests.yml)
 
 ## Installation
 
