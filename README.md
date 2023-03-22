@@ -24,3 +24,13 @@ for filename in data.walk():
   echo filename
 ```
 
+You can also from embedding at compile-time (the default) to reading files from disk at runtime for testing purposes with `embed = false`:
+
+```nim
+import embedfs
+const data = embedDir("data", embed = false)
+writeFile("data"/"foo.txt", "foo")
+doAssert data.get("foo.txt") == some("foo")
+writeFile("data"/"foo.txt", "new value")
+doAssert data.get("foo.txt") == some("new value")
+```
