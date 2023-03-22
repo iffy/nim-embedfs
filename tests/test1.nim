@@ -1,7 +1,6 @@
 import std/algorithm
 import std/os
 import std/sequtils
-import std/strformat
 import std/unittest
 import embedfs
 
@@ -23,7 +22,7 @@ test "walk":
 
 test "get":
   const fs = embedDir("data")
-  check fs.get("bar.txt") == some("bar\n")
+  check fs.get("bar.txt") == some("bar\l")
 
 test "dynamic":
   const fs = embedDir("_dynamic", embed = false)

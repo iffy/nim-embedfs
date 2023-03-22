@@ -79,5 +79,5 @@ proc get*(ed: EmbeddedFS|RuntimeEmbeddedFS, filename: string): Option[string] =
     # runtime "embed"
     try:
       return some(readFile(ed.string / filename))
-    except:
+    except CatchableError:
       discard
