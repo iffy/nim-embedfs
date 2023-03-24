@@ -51,3 +51,13 @@ test "dynamic path":
   writeFile(TESTDIR/"data"/"dyn.txt", "dyn")
   defer: removeFile(TESTDIR/"data"/"dyn.txt")
   check fs.get("dyn.txt") == some("dyn")
+
+test "no parent dir":
+  const fs = embedDir("data", embed = false)
+  check fs.get(".."/"config.nims").isNone
+  check fs.listDir("..").toSeq().len == 0
+
+test "no absolute dir":
+  const fs = embedDir("data", embed = false)
+  check fs.get(currentSourcePath.absolutePath).isNone
+  check fs.listDir(currentSourcePath.absolutePath.parentDir).toSeq().len == 0
