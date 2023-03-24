@@ -55,10 +55,12 @@ iterator listDir*(ed: EmbeddedFS|RuntimeEmbeddedFS, subdir = ""): string =
           yield key.substr(len(subdir)+1)
   else:
     # runtime "embed"
-    let fulldir = ed.string / subdir
-    for item in walkDir(fulldir):
-      if item.kind == pcFile:
-        yield item.path.relativePath(fulldir)
+    let root = ed.string.absolutePath
+    let fulldir = root / subdir
+    if fulldir.isRelativeTo(root):
+      for item in walkDir(fulldir):
+        if item.kind == pcFile:
+          yield item.path.relativePath(fulldir)
 
 iterator walk*(ed: EmbeddedFS|RuntimeEmbeddedFS): string =
   ## List all embedded file names
@@ -78,6 +80,9 @@ proc get*(ed: EmbeddedFS|RuntimeEmbeddedFS, filename: string): Option[string] =
   else:
     # runtime "embed"
     try:
-      return some(readFile(ed.string / filename))
+      let root = ed.string.absolutePath
+      let path = root / filename
+      if path.isRelativeTo(root):
+        return some(readFile(path))
     except CatchableError:
       discard
