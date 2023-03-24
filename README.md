@@ -7,7 +7,7 @@ Embed directories of files in your executable. It's like `staticRead`/`slurp` fo
 ## Installation
 
 ```
-nimble install https://github.com/iffy/nim-embedfs
+nimble install embedfs
 ```
 
 ## Usage
