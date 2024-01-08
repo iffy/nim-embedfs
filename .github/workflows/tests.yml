@@ -9,6 +9,7 @@ jobs:
       matrix:
         nimversion:
           - binary:stable
+          - nightly:https://github.com/nim-lang/nightlies/releases/tag/2023-03-31-version-2-0-2e4ba4ad93c6d9021b6de975cf7ac78e67acba26
         os:
           - ubuntu-latest
           - macOS-latest
