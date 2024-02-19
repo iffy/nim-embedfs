@@ -19,6 +19,12 @@ template VLOG(msg: string) =
   else:
     discard
 
+func looksAbsolute(path: string): bool =
+  when doslikeFileSystem:
+    path.len >= 3 and path[1..2] == ":\\"
+  else:
+    path.startsWith("/")
+
 template embedDir*(dirname: string, embed:static[bool] = true): untyped =
   ## Embed a directory of files into this program.
   ## 
@@ -31,17 +37,21 @@ template embedDir*(dirname: string, embed:static[bool] = true): untyped =
   when embed:
     const tmp = static:
       var files = initTable[string, string](0)
-      let rootdir = instantiationInfo(-1, true).filename.parentDir
-      let fulldir = rootdir / dirname
+      let fulldir = if dirname.looksAbsolute:
+          dirname
+        else:
+          instantiationInfo(-1, true).filename.parentDir / dirname
       VLOG "embedding dir " & fulldir
-      for relpath in walkDirRec(rootdir / dirname, relative = true):
+      for relpath in walkDirRec(fulldir, relative = true):
         files[relpath] = staticRead(fulldir / relpath)
         VLOG " + " & relpath & " size=" & $files[relpath].len
       files
     tmp.EmbeddedFS
   else:
-    let rootdir = instantiationInfo(-1, true).filename.parentDir
-    (rootdir / dirname).RuntimeEmbeddedFS
+    if dirname.looksAbsolute:
+      dirname.RuntimeEmbeddedFS
+    else:
+      (instantiationInfo(-1, true).filename.parentDir / dirname).RuntimeEmbeddedFS
 
 iterator listDir*(ed: EmbeddedFS|RuntimeEmbeddedFS, subdir = ""): string =
   ## List all embedded file names within the given directory
