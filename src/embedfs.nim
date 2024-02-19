@@ -19,7 +19,7 @@ template VLOG(msg: string) =
   else:
     discard
 
-func looksAbsolute(path: string): bool =
+func looksAbsolute*(path: string): bool =
   when doslikeFileSystem:
     path.len >= 3 and path[1..2] == ":\\"
   else:
