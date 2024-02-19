@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.2"
+version       = "0.2.0"
 author        = "Matt Haggard"
 description   = "Embed static files easily"
 license       = "MIT"
